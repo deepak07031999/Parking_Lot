@@ -334,9 +334,4 @@ ParkingSpot parkingSpot = (ParkingSpot) parkingSpotClass
 - **Separation of Concerns**: DTOs vs Services clearly separated
 - **Encapsulation**: Private fields with controlled access
 - **Polymorphism**: Vehicle and ParkingSpot hierarchies
-<<<<<<< Updated upstream
 - **Abstraction**: Service interfaces and abstract classes
->>>>>>> Stashed changes
-=======
-- **Abstraction**: Service interfaces and abstract classes
->>>>>>> Stashed changes
