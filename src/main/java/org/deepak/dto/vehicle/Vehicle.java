@@ -9,12 +9,22 @@ public abstract class Vehicle {
     public abstract void assignTicket(ParkingTicket parkingTicket);
 
     public Vehicle(String licenseNo, Class<?> parkingSpotClass){
-            this.licenseNo = licenseNo;
-            this.parkingSpotClass = parkingSpotClass;
+        if (licenseNo == null || licenseNo.trim().isEmpty()) {
+            throw new IllegalArgumentException("License number cannot be null or empty");
+        }
+        if (parkingSpotClass == null) {
+            throw new IllegalArgumentException("Parking spot class cannot be null");
+        }
+        this.licenseNo = licenseNo;
+        this.parkingSpotClass = parkingSpotClass;
     }
 
     public void setParkingTicket(ParkingTicket parkingTicket) {
         this.parkingTicket = parkingTicket;
+    }
+    
+    public ParkingTicket getParkingTicket() {
+        return parkingTicket;
     }
 
     public String getLicenseNo() {

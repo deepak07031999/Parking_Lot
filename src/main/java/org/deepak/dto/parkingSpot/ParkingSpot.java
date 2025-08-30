@@ -9,10 +9,10 @@ public abstract class ParkingSpot {
     private boolean isFree;
     private Vehicle vehicle;
     protected int amount;
-    private final Integer floor;
+    private final int floor;
     private static final AtomicInteger counter = new AtomicInteger(0);
 
-    public ParkingSpot(int amount,Integer floor) {
+    public ParkingSpot(int amount, int floor) {
         this.isFree = true;
         this.amount = amount;
         this.vehicle = null;
@@ -20,11 +20,18 @@ public abstract class ParkingSpot {
         this.floor= floor;
     }
 
-    public boolean getIsFree(){
+    public boolean isFree(){
         return this.isFree;
     }
+    
     public void assignVehicle(Vehicle vehicle){
-        this.isFree=false;
+        if (!this.isFree) {
+            throw new IllegalStateException("Parking spot is already occupied");
+        }
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Vehicle cannot be null");
+        }
+        this.isFree = false;
         this.vehicle = vehicle;
     }
     public void removeVehicle(){

@@ -9,29 +9,38 @@ import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ParkingTicket {
-    private final Integer id;
+    private final int id;
     private static final AtomicInteger counter = new AtomicInteger(0);
     private final LocalDateTime timestamp;
-    private Integer amount;
+    private Integer cachedAmount;
+    private LocalDateTime lastCalculationTime;
 
     private final Vehicle vehicle;
     private final ParkingSpot parkingSpot;
 
     public ParkingTicket(Vehicle vehicle, ParkingSpot parkingSpot) {
+        if (vehicle == null || parkingSpot == null) {
+            throw new IllegalArgumentException("Vehicle and parking spot cannot be null");
+        }
         this.vehicle = vehicle;
         this.parkingSpot = parkingSpot;
-        timestamp= LocalDateTime.now();
-        id= counter.incrementAndGet();
+        this.timestamp = LocalDateTime.now();
+        this.id = counter.incrementAndGet();
     }
 
-    public int getParkingHours(){
-        Duration duration = Duration.between(this.timestamp, LocalDateTime.now());
-        double hours = (double) duration.getSeconds()/ 3600.00;
-        return (int) Math.ceil(hours);
+    public int getParkingHours(LocalDateTime currentTime){
+        Duration duration = Duration.between(this.timestamp, currentTime);
+        double hours = (double) duration.getSeconds() / 3600.0;
+        return Math.max(1, (int) Math.ceil(hours));
     }
-    public Integer getAmount() {
-        this.amount = getParkingHours() * this.parkingSpot.getAmount();
-        return this.amount;
+    
+    public int getAmount() {
+        LocalDateTime now = LocalDateTime.now();
+        if (cachedAmount == null || !now.equals(lastCalculationTime)) {
+            this.cachedAmount = getParkingHours(now) * this.parkingSpot.getAmount();
+            this.lastCalculationTime = now;
+        }
+        return this.cachedAmount;
     }
     public boolean initiatePayment(Payment payment){
         return payment.initiatePayment(getAmount());

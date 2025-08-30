@@ -1,7 +1,9 @@
 package org.deepak.dto.parkingSpot;
 
 public class Electric extends ParkingSpot{
-    public Electric(Integer floor) {
-        super(30, floor);
+    private static final int ELECTRIC_SPOT_RATE = 30;
+    
+    public Electric(int floor) {
+        super(ELECTRIC_SPOT_RATE, floor);
     }
 }

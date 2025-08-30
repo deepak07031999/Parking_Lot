@@ -8,9 +8,9 @@ import org.deepak.interfaces.ParkingSpotService;
 public class ParkingSpotServiceImpl  implements ParkingSpotService {
     DisplayService displayService= new DisplayServiceImpl();
     @Override
-    public ParkingSpot createParkingSpot(Class<?> parkingSpotClass, Integer floor) {
+    public ParkingSpot createParkingSpot(Class<?> parkingSpotClass, int floor) {
         try{
-            ParkingSpot parkingSpot = (ParkingSpot) parkingSpotClass.getDeclaredConstructor(Integer.class).newInstance(floor);
+            ParkingSpot parkingSpot = (ParkingSpot) parkingSpotClass.getDeclaredConstructor(int.class).newInstance(floor);
             ParkingLot.getInstance().getFreeParkingSpots().get(parkingSpotClass).add(parkingSpot);
             displayService.update(parkingSpotClass,1);
             return parkingSpot;

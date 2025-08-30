@@ -35,14 +35,17 @@ public class Main {
         Vehicle v2 = new Car("HR26-02");
 
         ParkingServiceImpl parkingLotService= new ParkingServiceImpl();
-        System.out.println("count:" + parkingLot.getDisplayBoard().getFreeParkingSpots().get(v1.getParkingSpotClass()));
+        java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Main.class.getName());
+        
+        logger.info("Available spots: " + parkingLot.getDisplayBoard().getFreeParkingSpots().get(v1.getParkingSpotClass()));
         ParkingTicket parkingTicket1 = parkingLotService.entry(v1);
-        System.out.println("count:" + parkingLot.getDisplayBoard().getFreeParkingSpots().get(v1.getParkingSpotClass()));
+        logger.info("Available spots after entry: " + parkingLot.getDisplayBoard().getFreeParkingSpots().get(v1.getParkingSpotClass()));
         ParkingTicket parkingTicket2 = parkingLotService.entry(v2);
-        System.out.println("count:" + parkingLot.getDisplayBoard().getFreeParkingSpots().get(v1.getParkingSpotClass()));
+        logger.info("Available spots after second entry: " + parkingLot.getDisplayBoard().getFreeParkingSpots().get(v1.getParkingSpotClass()));
+        
         Thread.sleep(1000);
-        parkingTicket1.initiatePayment(new CreditCard("cardNo",22));
-        parkingLotService.exit(parkingTicket1,v1);
-        System.out.println("count:" + parkingLot.getDisplayBoard().getFreeParkingSpots().get(v1.getParkingSpotClass()));
+        parkingTicket1.initiatePayment(new CreditCard("1234567890123456", 123));
+        parkingLotService.exit(parkingTicket1, v1);
+        logger.info("Available spots after exit: " + parkingLot.getDisplayBoard().getFreeParkingSpots().get(v1.getParkingSpotClass()));
     }
 }
