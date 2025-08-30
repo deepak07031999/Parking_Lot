@@ -1,12 +1,6 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-# Parking_Lot
+# Parking Lot Management System
 
 https://app.diagrams.net/?src=about#G1DAvQWmClNJNG8pYG2Lo5U1eQzNEkrpkn#%7B%22pageId%22%3A%22CLFCIQpaYqhc2dLCTOr0%22%7D
-=======
-=======
->>>>>>> Stashed changes
-# Parking Lot Management System
 
 A comprehensive parking lot management system built with Java, implementing object-oriented design principles and design patterns with proper separation of concerns.
 
