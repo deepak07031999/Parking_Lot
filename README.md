@@ -1,7 +1,5 @@
 # Parking Lot Management System
 
-https://app.diagrams.net/?src=about#G1DAvQWmClNJNG8pYG2Lo5U1eQzNEkrpkn#%7B%22pageId%22%3A%22CLFCIQpaYqhc2dLCTOr0%22%7D
-
 A comprehensive parking lot management system built with Java, implementing object-oriented design principles and design patterns with proper separation of concerns.
 
 ## Features
@@ -32,178 +30,123 @@ A comprehensive parking lot management system built with Java, implementing obje
 
 ```mermaid
 classDiagram
-    %% Core Entities
     class ParkingLot {
         -static volatile ParkingLot parkingLot
-        -Map~Class, List~ParkingSpot~~ freeParkingSpots
-        -List~EntryPanel~ entrances
-        -List~ExitPanel~ exits
+        -Map freeParkingSpots
         -DisplayBoard displayBoard
-        +static getInstance() ParkingLot
+        +getInstance() ParkingLot
         +getFreeParkingSpots() Map
         +getDisplayBoard() DisplayBoard
     }
-
+    
     class DisplayBoard {
-        -Map~Class, Integer~ freeParkingSpots
+        -Map freeParkingSpots
         +DisplayBoard()
         +getFreeParkingSpots() Map
         +setFreeParkingSpots(Class, int)
     }
-
+    
     class ParkingTicket {
         -int id
         -LocalDateTime timestamp
         -Integer cachedAmount
         -Vehicle vehicle
         -ParkingSpot parkingSpot
+        +ParkingTicket(Vehicle, ParkingSpot)
         +getParkingHours(LocalDateTime) int
         +getAmount() int
         +initiatePayment(Payment) boolean
     }
-
-    %% Vehicle Hierarchy
+    
     class Vehicle {
         <<abstract>>
         -String licenseNo
         -ParkingTicket parkingTicket
         -Class parkingSpotClass
-        +assignTicket(ParkingTicket)*
+        +Vehicle(String, Class)
+        +assignTicket(ParkingTicket)
         +getLicenseNo() String
-        +getParkingSpotClass() Class
     }
-
+    
     class Car {
         +Car(String)
-        +assignTicket(ParkingTicket)
     }
-
+    
     class Bike {
         +Bike(String)
-        +assignTicket(ParkingTicket)
     }
-
+    
     class Truck {
         +Truck(String)
-        +assignTicket(ParkingTicket)
     }
-
+    
     class EV {
         +EV(String)
-        +assignTicket(ParkingTicket)
     }
-
-    %% ParkingSpot Hierarchy
+    
     class ParkingSpot {
         <<abstract>>
         -int id
         -boolean isFree
         -Vehicle vehicle
         #int amount
-        -int floor
+        +ParkingSpot(int)
         +isFree() boolean
         +assignVehicle(Vehicle)
         +removeVehicle()
-        +getAmount() int
     }
-
+    
     class Compact {
-        -static final int COMPACT_SPOT_RATE
         +Compact(int)
     }
-
+    
     class Large {
-        -static final int LARGE_SPOT_RATE
         +Large(int)
     }
-
+    
     class Electric {
-        -static final int ELECTRIC_SPOT_RATE
         +Electric(int)
     }
-
+    
     class MotorCycle {
-        -static final int MOTORCYCLE_SPOT_SIZE
         +MotorCycle(int)
     }
-
-    %% Payment System
+    
     class Payment {
         <<abstract>>
-        #PaymentStatus status
-        #LocalDateTime timestamp
-        +initiatePayment(int)* boolean
+        +initiatePayment(int) boolean
     }
-
+    
     class CreditCard {
         -String cardNumber
         -int cvv
         +CreditCard(String, int)
         +initiatePayment(int) boolean
     }
-
+    
     class Cash {
+        +Cash()
         +initiatePayment(int) boolean
     }
-
-    %% Services
+    
     class ParkingService {
         <<interface>>
         +entry(Vehicle) ParkingTicket
         +exit(ParkingTicket, Vehicle) int
     }
-
+    
     class ParkingServiceImpl {
         -DisplayService displayService
         -ParkingLot parkingLot
+        +ParkingServiceImpl()
         +entry(Vehicle) ParkingTicket
         +exit(ParkingTicket, Vehicle) int
     }
-
-    class DisplayService {
-        <<interface>>
-        +update(Class, int)
-    }
-
-    class DisplayServiceImpl {
-        +update(Class, int)
-    }
-
-    class ParkingSpotService {
-        <<interface>>
-        +createParkingSpot(Class, int) ParkingSpot
-    }
-
-    class ParkingSpotServiceImpl {
-        -DisplayService displayService
-        +createParkingSpot(Class, int) ParkingSpot
-    }
-
-    %% Account Management
-    class Account {
-        <<abstract>>
-        -String userName
-        -String password
-        -Person person
-        -AccountStatus status
-    }
-
-    class Admin {
-        -DisplayService displayService
-        +addParkingSpot(ParkingSpot) boolean
-        +addEntryPanel(EntryPanel) boolean
-        +addExitPanel(ExitPanel) boolean
-    }
-
-    class ParkingAttendant {
-        +processTicket(String) boolean
-    }
-
-    %% Relationships
-    ParkingLot ||--|| DisplayBoard : contains
-    ParkingLot ||--o{ ParkingSpot : manages
-    ParkingTicket ||--|| Vehicle : assigned to
-    ParkingTicket ||--|| ParkingSpot : occupies
+    
+    ParkingLot --> DisplayBoard
+    ParkingTicket --> Vehicle
+    ParkingTicket --> ParkingSpot
+    ParkingTicket --> Payment
     
     Vehicle <|-- Car
     Vehicle <|-- Bike
@@ -219,16 +162,10 @@ classDiagram
     Payment <|-- Cash
     
     ParkingService <|.. ParkingServiceImpl
-    DisplayService <|.. DisplayServiceImpl
-    ParkingSpotService <|.. ParkingSpotServiceImpl
-    
-    Account <|-- Admin
-    Account <|-- ParkingAttendant
-    
-    ParkingServiceImpl --> DisplayService : uses
-    ParkingServiceImpl --> ParkingLot : uses
-    ParkingTicket --> Payment : processes
+    ParkingServiceImpl --> ParkingLot
 ```
+
+
 
 ## Security Features
 
